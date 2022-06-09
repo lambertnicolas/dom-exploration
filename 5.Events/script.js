@@ -5,70 +5,32 @@ const getElapsedTime = () => {
 }
 
 const clickOnSquare = (e) => {
+  //Affiche la classList de la div cliquée
   console.log(e.target.classList[1])
   console.log(getElapsedTime())
+  //Ajouter une div de la même couleur que la div initiale
+  const newDiv = document.createElement("div");
+  newDiv.style.display = "inline-block";
+	newDiv.classList.add("displayedsquare", `${e.target.classList[1]}`);
+  const main = document.querySelector("main");
+  const section = main.firstElementChild;
+  section.appendChild(newDiv);
+  //Ajouter une li dans le log
+  const list = document.querySelector("ul");
+  let newLi = document.createElement("li");
+  let newContent = document.createTextNode(`[${getElapsedTime()}] Created a new ${e.target.classList[1]} square`);
+  newLi.appendChild(newContent); 
+  list.appendChild(newLi);
 }
 
 const actionSquares = document.querySelectorAll('.actionsquare')
 for (let actionSquare of actionSquares) {
   actionSquare.addEventListener('click', clickOnSquare)
-/* -1---- */
-let getStyle = actionSquare.getAttribute("class");
-
-let selectSection = document.querySelectorAll("section");
-function addNewDiv(){
-
-    let newDiv = document.createElement("div");
-    newDiv.setAttribute("class", "displayedsquare displayedsquare-wrapper ." + getStyle + "");
-    selectSection[0].appendChild(newDiv);
-    
-/* -2---- */
-let newLi = document.createElement("li");
-const putLi = document.querySelector("ul");
-let newContent = document.createTextNode("Action done !");
-newLi.appendChild(newContent);
-putLi.appendChild(newLi);
-/* -2---- */
-
-}
-/* -1---- */
-
-
-
-/* -1---- */
-  actionSquare.addEventListener('click', addNewDiv)
-/* -1---- */
-
-
 }
 
-/*
-Everytime the user clicks on one of the action squares
-- Create a new <div> with a class .displayedsquare and the corresponding clicked color in 
-the div above (.displayedsquare-wrapper)
-- Create a new <li> in the log below to state when the action was done 
-*/
-
-
-// //Fonction pour créer une div de la même couleur que la div initiale
-// function addDiv () {
-
-//   //Récupérer la couleur de la div initiale
-//   //let colorInitial = document.querySelector('.actionsquare').style.backgroundColor;
-  
-//   let newDiv = document.createElement("div");
-//   newDiv.classList.add("displayedsquare");
-//   const main = document.querySelector("main");
-//   const section = main.children[0];
-//   section.appendChild(newDiv);
-// }
-
-// // const green = document.querySelector('.green');
-// // const violet = document.querySelector('.violet');
-// // const orange = document.querySelector('.orange');
-
-
-
+//
+//Actions éffectuées avec le clavier
+//
 //Fonction RGBCOLOR
 const couleurs =[];
 function rgbColor() {
@@ -78,10 +40,41 @@ function rgbColor() {
     return couleurs.join(',');
 }
 
-document.addEventListener('keydown', function (event) {
+document.addEventListener('keydown', (event) => {
   //Changer le BackgroundColor du body quand on press space.
   if (event.code === 'Space') {
     document.body.style.backgroundColor = `rgb(${rgbColor()})`;
+    //Ajouter une li dans le log
+    const list = document.querySelector("ul");
+    let newLi = document.createElement("li");
+    let newContent = document.createTextNode(`[${getElapsedTime()}] Created a new background`);
+    newLi.appendChild(newContent); 
+    list.appendChild(newLi);
   }
+  else if (event.key === "l") {
+    const list = document.querySelector("ul");
+		while (list.hasChildNodes()) {
+			list.removeChild(list.firstChild);
+		}
+	}
+  else if (event.key === "s") {
+    const newDivClass = document.querySelector(".displayedquare-wrapper");
+		while (newDivClass.hasChildNodes()) {
+			newDivClass.removeChild(newDivClass.firstChild);
+		}
+	}
 });
+
+
+//
+//Afficher une alerte quand on clic sur un newDiv
+//
+const clickOnNewSquare = (e) => {
+  return alert(`The color of the square is ${e.target.classList[1]}`);
+}
+
+const actionNewSquares = document.querySelectorAll('.displayedquare-wrapper')
+for (let actionNewSquare of actionNewSquares) {
+  actionNewSquare.addEventListener('click', clickOnNewSquare)
+}
 
